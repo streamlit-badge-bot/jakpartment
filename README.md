@@ -2,6 +2,8 @@
 This is my first end-to-end Data Science project which incorporates web scraping, data wrangling and analysis, machine learning modeling, and web app deployment.
 The deployed web app has a calculator page to predict annual rent price of apartment units, interactive data dashboards with visualizations, as well a dedicated interactive page in which you can create and train your own machine learning model - without writing a single line of code.
 
+You can try the web app here: https://share.streamlit.io/radvian/jakpartment/main/app.py
+
 ## Aim of this project
 The main objective of this project is to develop a machine learning regression model which can predict an apartment unit's annual rent price. The dataset used to develop the model is scraped from Jendela 360, a third party online property marketplace. However, for data enthusiasts, there are other pages such as interactive dashboards and a special page to explore more about machine learning models. 
 
