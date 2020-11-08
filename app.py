@@ -100,24 +100,14 @@ def main():
     ML_Ready['In-Jakarta Check'] = JakCheck
     ###    
     st.sidebar.title('Navigation')
-    pages = st.sidebar.radio("Pages", ("Introduction", "Calculator", "Web Scraping Demo", "Data Dashboard", "Train Machine Learning Model", "Conclusion", "About the Author"), index = 0)
-    if pages == "Introduction":
+    pages = st.sidebar.radio("Pages", ("Home Page", "Apartment Rent Price Calculator", "Web Scraping Demo", "Data Visualization and Dashboard", "Play with Machine Learning Models", "FAQs", "About the Author"), index = 0)
+    if pages == "Home Page":
         
         st.title('Welcome to the Jakpartment Project!')
         st.image('apartment.jpg', width=650)
-        st.subheader("Have you ever wanted to rent an apartment unit in Jakarta (and its surrounding) and wonder - 'Am I being overcharged?' \
-                    'What factors determine the price of this apartment unit?' ")
-        st.subheader("Or...Do you have an apartment unit that you wanted to rent, \
-                    but you don't know what's the best rental price? Well, I am curious about those questions too! That's why I started this \
-                    project.")
-        st.subheader("If you wanted to cut to the chase, you can go to the navigation sidebar on the left, choose 'Calculator', and \
-                    predict the price of your desired apartment unit.")
-        st.subheader("However, if you want to stick around and explore how this project come to be, feel free to explore the other pages")
-        st.subheader("You can explore the data set of this project in the 'Data Dashboard'")
-        st.subheader("You can create, train, and evaluate your own machine learning model in the 'Machine Learning Model' Don't worry - you don't have \
-            to write a single line of code!")
-        st.subheader("You can see insights I gather from doing this project in the 'Conclusion' page, and you can get to know me better in the 'About the Author' page.")
-    elif pages == "Calculator":
+        st.write("Open the navigation sidebar and select any pages to proceed. Happy exploring!")
+    
+    elif pages == "Apartment Rent Price Calculator":
 
         st.title("Jabodetabek Apartment Annual Rent Price Predictor")
         st.markdown("Enter your desired apartment unit and we'll estimate the annual rent price.")
@@ -337,8 +327,8 @@ def main():
                 rounding = -7
 
             #Calculating the lower and upper bound
-            lower_price = int(round(price-price*interval, rounding))
-            upper_price = int(round(price+price*interval, rounding))
+            lower_price = int(round(price-price*(interval-0.01), rounding))
+            upper_price = int(round(price+price*(interval+0.01), rounding))
             #Changing to string for formatting
             str_price = format(price, ',')
             str_lowprice = format(lower_price, ',')
@@ -346,10 +336,14 @@ def main():
             st.subheader("Your apartment unit's annual rent price is predicted at IDR {}".format(str_price))
             st.subheader("A prediction interval of your unit's price is IDR {} until IDR {}".format(str_lowprice, str_upprice))
 
+        st.subheader("Author's note")
+        st.write("If your apartment unit is located on top of a mall (or within walking distance to a mall), it is reasonable that the price might be \
+                higher than what is predicted here.")
         st.subheader("Learn more about how the price is calculated")
         st.write("The predicted price is calculated by inputing the apartment unit details above into a tuned XGBoost Regression \
                 algorithm. The prediction interval is not a confidence interval, they are following arbitrary rules defined to present a relatively \
                 reasonable price range.")
+        
     elif pages == "Web Scraping Demo":
         st.title('Simple Web Scraping Demo')
         st.subheader("Welcome to the web scraping demo page!")
@@ -543,7 +537,7 @@ def main():
 
 
 
-    elif pages == "Data Dashboard":
+    elif pages == "Data Visualization and Dashboard":
         st.title('Jabodetabek Apartment Data Dashboard')
 
         if st.checkbox("Display Data", False):
@@ -648,11 +642,11 @@ def main():
         plt.tight_layout()
         st.pyplot(fig)
         st.write("On the X-Axis, '0' represents units without the selected facility, and '1' represents units with the selected facility")
-    elif pages == "Train Machine Learning Model":
+    elif pages == "Play with Machine Learning Models":
         st.title('Train and evaluate your own Machine Learning models')
         st.subheader('Do you need some introduction to machine learning models, and what this page should do?')
         explanation = st.radio('Choose', ("Yes, provide me with some explanation, please.", "No, I'm familiar with the subject matter and would like to \
-                train the model right away."))
+                train the model right away."), index=1)
         if explanation == "Yes, provide me with some explanation, please.":
             st.subheader('Part 1: What is a Machine Learning Regression model?')
             st.write("In this project, we use data which contain apartment unit details (location, area, facilities, etc) to predict \
@@ -710,9 +704,9 @@ def main():
                 we can do more things with lines of codes rather than a point-and-click interface. Furthermore, complex models can be \
                 trained faster by the use of GPU (Graphics Processing Unit) which is very difficult to implement in web apps like these.')                    
         st.subheader('What score should I aim for?')    
-        st.write("When cross validated, the final model's RMSE score usually averages at around 29000000, and has R-squared score around 0.9. \
+        st.write("When cross validated, the final model's RMSE score usually averages at around 30 000 000, and has R-squared score around 0.9. \
             Try to see if you can find combinations of columns and parameters that yields a model with RMSE score around the final model's, \
-            but watchout for overfitting!")
+            but watch out for overfitting!")
 
         if st.checkbox("Display Data", False):
             st.write(ML_Ready)
@@ -738,7 +732,7 @@ def main():
         seed = st.slider('Seed', 0, 10000)
         st.subheader('Select the test data proportion')
         st.write('This represents how much rows will be taken as the test set.')
-        test_size = st.slider('Test Proportion', 0.1, 0.5)
+        test_size = st.slider('Test Proportion', 0.1, 0.3)
 
         X_Custom = ML_Ready[cols]
         y = ML_Ready['Annual Price']
@@ -799,8 +793,8 @@ def main():
                         Your model might be overfit. Try to remove one or two feature columns, do a different range of \
                         hyperparameter tuning, or choose a different combination of columns')
                 else:
-                    if R2_test < 0.7:
-                        st.write('Your model does not underfit nor overfit, but its R-squared score is lower than 0.7.')
+                    if R2_test < 0.75:
+                        st.write('Your model does not underfit nor overfit, but its R-squared score is lower than 0.75.')
                         st.write("You can still do better! Try to find another combination of columns and/or parameters. \
                             A linear regression can achieve up to 0.78 R-squared score, \
                             while XGBoost and Light GBM can reach up to 0.9 R-squared score.")
@@ -1012,19 +1006,18 @@ def main():
                                
     
     
-    elif pages == "Conclusion":
+    elif pages == "FAQs":
         st.title ('Conclusion (in FAQ Style!)')
         st.subheader("Q: Tell us again why you choose this topic?")
-        st.write("A: I'm making short and long term goals for myself when I stumbled upon the question of where should I live as a young adult. \
-            For most young professionals, we can't afford yet to buy a house. The price of house and land, especially im capital cities like Jakarta \
-            is very high")
-        st.write("Most of us look into the prospect of renting apartment units - it costs less, and more flexible than owning a fixed property. \
-            When I browse around to see apartment units in Jakarta and its surrounding, I cannot make sense of the high price variances.")
-        st.write("There are units whose annual rent fee is at 30 million IDR, while others are over 100 million IDR. I wanted to know if these \
-            prices follow a pattern. What factors of a unit determines its price the most? Area? Location? Internet services? \
-            Also, would it be nice if we can have a web app that predicts an apartment unit's annual rent price? We can check if an advertised \
-            unit is overpriced or not.")
-        st.subheader("Q: So, did you find the answer to your curiosity?")
+        st.write("A: As a young adult, renting apartment units seem to be the preference for having a living space, especially \
+            in the short term time frame. Buying properties seem to be too expensive for us in the beginning of our careers. \
+            However, when I am searching for apartment units online, I'm curious on how to know if an advertised unit is overpriced or not.")
+        st.write("I feel that there needs to be a mathematical equation or model to make sense of apartment unit prices. Which factors \
+            determine an apartment unit's rental price the most? Is it area? Location? Facilities? Has there been a study about this yet?")
+        st.write("I think that a simple web app that can help estimate the price of an apartment unit can be beneficial for those who are seeking \
+            places to live, or those who are planning to rent their apartment for extra income - so they can settle on a price that's standardized \
+            and not over or underpriced.")
+        st.subheader("Q: So, how did you find the answer to your curiosity?")
         st.write("A: Initially I aim to make a linear regression model so we have numerical equation which can be explicitly written. \
             However, the R-squared score only reaches around 76-78%, and it suffers from multicolinearity issues. A lot of our feature variables \
             are correlated to one another. That's when I chose to use XGBoost Regressor as my model - and the result is pretty nice.")
