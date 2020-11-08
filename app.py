@@ -102,16 +102,20 @@ def main():
     st.sidebar.title('Navigation')
     pages = st.sidebar.radio("Pages", ("Introduction", "Calculator", "Web Scraping Demo", "Data Dashboard", "Train Machine Learning Model", "Conclusion", "About the Author"), index = 0)
     if pages == "Introduction":
+        
         st.title('Welcome to the Jakpartment Project!')
+        st.image('apartment.jpg', width=650)
         st.subheader("Have you ever wanted to rent an apartment unit in Jakarta (and its surrounding) and wonder - 'Am I being overcharged?' \
-                    'What factors determine the price of this apartment unit?' Or...Do you have an apartment unit that you wanted to rent, \
+                    'What factors determine the price of this apartment unit?' ")
+        st.subheader("Or...Do you have an apartment unit that you wanted to rent, \
                     but you don't know what's the best rental price? Well, I am curious about those questions too! That's why I started this \
                     project.")
         st.subheader("If you wanted to cut to the chase, you can go to the navigation sidebar on the left, choose 'Calculator', and \
                     predict the price of your desired apartment unit.")
         st.subheader("However, if you want to stick around and explore how this project come to be, feel free to explore the other pages")
         st.subheader("You can explore the data set of this project in the 'Data Dashboard'")
-        st.subheader("You can train your own machine learning model and evaluate your model's performance in the 'Machine Learning Model'.")
+        st.subheader("You can create, train, and evaluate your own machine learning model in the 'Machine Learning Model' Don't worry - you don't have \
+            to write a single line of code!")
         st.subheader("You can see insights I gather from doing this project in the 'Conclusion' page, and you can get to know me better in the 'About the Author' page.")
     elif pages == "Calculator":
 
@@ -342,8 +346,8 @@ def main():
             st.subheader("Your apartment unit's annual rent price is predicted at IDR {}".format(str_price))
             st.subheader("A prediction interval of your unit's price is IDR {} until IDR {}".format(str_lowprice, str_upprice))
 
-        if st.button("Learn more how the price is calculated"):
-            st.write("The predicted price is calculated by inputing the apartment unit details above into a tuned XGBoost Regression \
+        st.subheader("Learn more about how the price is calculated")
+        st.write("The predicted price is calculated by inputing the apartment unit details above into a tuned XGBoost Regression \
                 algorithm. The prediction interval is not a confidence interval, they are following arbitrary rules defined to present a relatively \
                 reasonable price range.")
     elif pages == "Web Scraping Demo":
@@ -792,8 +796,8 @@ def main():
             elif R2_train > R2_test:
                 if (R2_train - R2_test)*100 > 5:
                     st.write('Your R-squared train score is higher than your R-squared test score by 5 percent or more. \
-                        Your model might be overfit. Try to removing one or two column features, or doing a different range of \
-                        hyperparameter tuning.')
+                        Your model might be overfit. Try to remove one or two feature columns, do a different range of \
+                        hyperparameter tuning, or choose a different combination of columns')
                 else:
                     if R2_test < 0.7:
                         st.write('Your model does not underfit nor overfit, but its R-squared score is lower than 0.7.')
@@ -1015,8 +1019,8 @@ def main():
             For most young professionals, we can't afford yet to buy a house. The price of house and land, especially im capital cities like Jakarta \
             is very high")
         st.write("Most of us look into the prospect of renting apartment units - it costs less, and more flexible than owning a fixed property. \
-            When I browse around to see apartment units in Jakarta and its surrounding, I cannot make sense of the high price variances. \
-            There are units whose annual rent fee is at 30 million IDR, while others are over 100 million IDR. I wanted to know if these \
+            When I browse around to see apartment units in Jakarta and its surrounding, I cannot make sense of the high price variances.")
+        st.write("There are units whose annual rent fee is at 30 million IDR, while others are over 100 million IDR. I wanted to know if these \
             prices follow a pattern. What factors of a unit determines its price the most? Area? Location? Internet services? \
             Also, would it be nice if we can have a web app that predicts an apartment unit's annual rent price? We can check if an advertised \
             unit is overpriced or not.")
@@ -1029,21 +1033,23 @@ def main():
         st.subheader("Q: Mind elaborating further?")
         st.write("A: Area of a unit is the 'most important' feature in predicting an apartment unit's price. Next, it's the location that matters. \
             Apartment units in Jakarta Selatan are generally higher priced than other regions. Also, apartment units outside Jakarta are lower priced \
-            than apartment units within Jakarta. The facilities that determine rent prices the most are luxurious facilities - such as Multipurpose Room, \
+            than apartment units within Jakarta.")
+        st.write("The facilities that determine rent prices the most are luxurious facilities - such as Multipurpose Room, \
             Swimming Pool and Tennis Field. Units which have these 'luxury' faciltiies are almost always higher priced by a margin than units without these \
             facilities. On the other end of the spectrum, more 'common' facilities like AC, Internet Services, and Laundry, are found in both \
             higher-priced and lower-priced apartments, and thus are not as good as the 'luxury' facilities in predicting a unit's price.")
         st.subheader("Q: Interesting finding there. But let's go to the beginning. How do you get the data?")
         st.write("A: I scraped the data from a third party website named 'Jendela 360'. It's a website where we can view apartment units \
             online and see its details before contacting the marketing agency to rent it - which also can be done online. In simpler terms, \
-            it's an online marketplace for property renting/buying/selling. I scrape the apartment rental section of it using \
+            it's an online marketplace for property renting/buying/selling.")
+        st.write("I scrape the apartment rental section of it using \
             Beautiful Soup and Selenium libraries in Python. I scraped it on the third week of October 2020, so if somehow you attempt to \
             scrape it again now, it might not yield the exact same result - but our data should be representative enough for the current apartment rent market.")
         st.subheader("Q: After you get the data, what do you do?")
         st.write("A: I'm glad you asked. Here's the thing - I spend more time cleaning the data than training it. As the data is raw, I need to \
             check for values which does not make sense. If you check my first jupyter notebook in my 'jakpartment' repository, you'll find that \
-            there are a few studio apartment units which are priced outstandingly high because they attach a wrong currency to it. \
-            There's a studio apartment unit priced at 30 million...wait for it...USD. There are also clearly furnished apartment units which \
+            there are a few studio apartment units which are priced outstandingly high because they attach a wrong currency to it.")
+        st.write("There's a studio apartment unit priced at 30 million...wait for it...USD. There are also clearly furnished apartment units which \
             does not list any facilities. There are also an apartment unit which has over 7000 meter squared of area. Upon further checking, that \
             apartment unit is a condominium penthouse - which is not what we're looking for.")
         st.write("Before I train my data, I need to remove outliers, fix wrongly labeled values (in terms of currency unit), and visualize the data. \
@@ -1079,8 +1085,8 @@ def main():
         st.write("I graduated at 2020 from Universitas Pelita Harapan with the title Bachelor of Mathematics, majoring in Actuarial Science. \
             Currently, I'm studying at Pradita University as a student in the Master of Information Technology degree majoring in Big Data and IoT. \
             I am also employed as an IFRS 17 Actuary at PT Asuransi Adira Dinamika.") 
-        st.write("I like learning statistics and mathematics. Since today is the age of Big Data, I find that most people who \
-            aren't concentrating in mathematics might find themselves overwhelmed with large amounts of data. My dream is to help people make better \
+        st.write("I like learning about statistics and mathematics. Since today is the age of Big Data, I find that most people who \
+            aren't majoring in mathematics might find themselves overwhelmed with large amounts of data. My dream is to help people make better \
             decision through a data-driven approach.") 
         st.write("In order to do that, I am happy to wrangle and analyze raw data, creating models based on it, and \
             conveying insights I gained to others who are not well-versed in data, so they can understand it without having to \
