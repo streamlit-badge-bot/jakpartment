@@ -1,0 +1,15 @@
+streamlit
+numpy
+pandas
+matplotlib
+sklearn
+joblib
+seaborn
+scipy
+datetime
+random
+pickle
+folium
+lightgbm
+xgboost
+mlxtend
