@@ -7,4 +7,3 @@ lightgbm
 folium
 streamlit_folium
 bs4
-base64
