@@ -4,3 +4,11 @@ seaborn
 sklearn
 xgboost
 mlxtend
+lightgbm
+folium
+streamlit_folium
+bs4
+requests
+json
+re
+base64
