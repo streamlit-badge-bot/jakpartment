@@ -286,27 +286,8 @@ def main():
             TV[0] + ATM[0] + TV_Cable[0] + Grocery[0] + Internet[0] + Laundry[0] + Security[0] + Multipurpose_Room[0] + \
             Restaurant[0] + Playground[0] + sports
 
-        Group1 = list()
-        Group2 = list()
-        Group3 = list()
-        Group4 = list()
-
-        group1 = AC[0] + Water_Heater[0] + Dining_Set[0] + Bed[0] + Kitchen[0] + Fridge[0] + Furnished[0]
-        group2 = TV[0] + ATM[0] + TV_Cable[0] + Grocery[0] + Internet[0] + Laundry[0] + Security[0] + Multipurpose_Room[0] + Restaurant[0] + Playground[0]
-        group3 = Swim_Pool[0] + Gym[0]
-        group4 = Tennis[0] + Jogging[0] + Basketball[0]
-
-        Group1.append(group1)
-        Group2.append(group2)
-        Group3.append(group3)
-        Group4.append(group4)
-
         Total_Facilities.append(total)
-        st.write(Sports)
-        st.write(Total_Facilities)
 
-        STF = list()
-        STF.append(np.log1p(total))
 
         df = pd.DataFrame({'No_Rooms':No_Rooms, 'Longitude':Longitude, 'Latitude':Latitude, 'Furnished':Furnished, 'Area':Area, 'AC':AC,
        'Water_Heater':Water_Heater, 'Dining_Set':Dining_Set, 'Bed':Bed, 'Kitchen':Kitchen, 'Fridge':Fridge,
@@ -354,8 +335,8 @@ def main():
             
 
             #Calculating the lower and upper bound
-            lower_price = int(round(price-price*(interval+0.01), rounding))
-            upper_price = int(round(price+price*(interval-0.01), rounding))
+            lower_price = int(round(price-price*(interval+0.055), rounding))
+            upper_price = int(round(price+price*(interval-0.055), rounding))
             #Changing to string for formatting
             str_price = format(price, ',')
             str_lowprice = format(lower_price, ',')
