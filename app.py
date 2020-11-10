@@ -90,14 +90,14 @@ def main():
 
     ML_Ready = ML_Ready.drop(['FurnishedNew', 'Unnamed: 0', 'Index'], axis='columns')
     ML_Ready = ML_Ready.rename({'No_Rooms':'Number of Bedrooms'}, axis = 'columns')
-    JakCheck = list()
+    InJakCheck = list()
     for reg in ML_Ready.Region:
         if 'Jakarta' in reg:
-            JakCheck.append(1)
+            InJakCheck.append(1)
         else:
-            JakCheck.append(0)
+            InJakCheck.append(0)
     
-    ML_Ready['In-Jakarta Check'] = JakCheck
+    ML_Ready['In-Jakarta Check'] = InJakCheck
     ###    
     st.sidebar.title('Navigation')
     pages = st.sidebar.radio("Pages", ("Home Page", "Apartment Rent Price Calculator", "Web Scraping Demo", "Data Visualization and Dashboard", "Play with Machine Learning Models", "FAQs", "About the Author"), index = 0)
@@ -124,24 +124,36 @@ def main():
             return float(dict[region][locality].split(',')[1])
 
         #Make empty lists of features
-        Area = list()
-        Latitude = list()
-        Longitude = list()
-        Jakcheck = list()
-        Multipurpose_Room = list()
-        Playground = list()
-        Basketball = list()
-        Swim_Pool = list()
-        Jogging = list()
-        Restaurant = list()
-        Tennis = list()
-        Washing_Machine = list()
-        Fridge = list()
-        Furnished = list()
-        Water_Heater = list()
-        Kitchen = list()
-        No_Rooms = list()
-
+        No_Rooms = list() 
+        Longitude = list() 
+        Latitude= list() 
+        Furnished = list() 
+        Area= list() 
+        AC= list()
+        Water_Heater= list() 
+        Dining_Set= list() 
+        Bed= list() 
+        Kitchen= list() 
+        Fridge= list()
+        Washing_Machine= list() 
+        TV= list()
+        ATM= list() 
+        TV_Cable= list() 
+        Grocery= list() 
+        Internet= list()
+        Swim_Pool= list() 
+        Laundry= list()
+        Security= list() 
+        Basketball= list() 
+        Multipurpose_Room= list()
+        Gym= list()
+        Jogging= list() 
+        Tennis= list() 
+        Restaurant= list() 
+        Playground= list() 
+        Jakcheck= list()
+        Total_Facilities=list()
+        Sports = list()
         st.subheader("What's your apartment unit type?")
         unit_type = st.selectbox("Unit Type",("Studio", "1 Bedroom(s)", "2 Bedroom(s)", "3 Bedroom(s)", 
                                 "4 (or more) Bedroom(s)"))
@@ -171,13 +183,13 @@ def main():
             Area.append(area)
         elif unit_type == '3 Bedroom(s)':
             No_Rooms.append(3)
-            st.write('3 Bedroom(s) apartment units have area ranging from 38 - 300 m\u00b2 with an average of 121 m\u00b2.')
-            area = st.slider('Area', 38, 300)
+            st.write('3 Bedroom(s) apartment units have area ranging from 38 - 250 m\u00b2 with an average of 121 m\u00b2.')
+            area = st.slider('Area', 38, 250)
             Area.append(area)
         elif unit_type == '4 (or more) Bedroom(s)':
             No_Rooms.append(4)
-            st.write('4 Bedroom(s) apartment units have area ranging from 92 - 300 m\u00b2 with an average of 211 m\u00b2.')
-            area = st.slider('Area', 92, 300)
+            st.write('4 Bedroom(s) apartment units have area ranging from 92 - 250 m\u00b2 with an average of 211 m\u00b2.')
+            area = st.slider('Area', 92, 250)
             Area.append(area)
 
         st.subheader("Where is your apartment unit? (Region)")
@@ -228,107 +240,122 @@ def main():
         Longitude.append(lon_finder(location, region, locality)) 
         Latitude.append(lat_finder(location, region, locality))
 
-        st.subheader("Which facilities that your unit have?")
+        st.subheader("Which in-room facilities that your unit have?")
 
-        if st.checkbox('Multipurpose Room'):
-            Multipurpose_Room.append(1)
-        else:
-            Multipurpose_Room.append(0)
+        def facil(displayname, featurename):
+            if st.checkbox(displayname):
+                featurename.append(1)
+            else:
+                featurename.append(0)
 
-        if st.checkbox('Kids Playground'):
-            Playground.append(1)
-        else:
-            Playground.append(0)
-    
-        if st.checkbox('Basketball Field'):
-            Basketball.append(1)
-        else:
-            Basketball.append(0)
-    
-        if st.checkbox('Swimming Pool'):
-            Swim_Pool.append(1)
-        else:
-            Swim_Pool.append(0)
-    
-        if st.checkbox('Jogging Track'):
-            Jogging.append(1)
-        else:
-            Jogging.append(0)
-    
-        if st.checkbox('Restaurant'):
-            Restaurant.append(1)
-        else:
-            Restaurant.append(0)
+        facil('Air Conditioner', AC)
+        facil('Water Heater', Water_Heater)
+        facil('Dining Set', Dining_Set)
+        facil('Bed', Bed)
+        facil('Kitchen Set', Kitchen)
+        facil('Refrigerator', Fridge)
+        facil('Washing Machine', Washing_Machine)
+        facil('TV', TV)
+        
+        st.subheader('Which apartment facilities are present?')
 
-        if st.checkbox('Tennis Field'):
-            Tennis.append(1)
-        else:
-            Tennis.append(0)
-    
-        if st.checkbox('Washing Machine'):
-            Washing_Machine.append(1)
-        else:
-            Washing_Machine.append(0)
-    
-        if st.checkbox('Refrigerator'):
-            Fridge.append(1)
-        else:
-            Fridge.append(0)
+        facil('ATM', ATM)
+        facil('TV Cable Services', TV_Cable)
+        facil('Grocery Shops', Grocery)
+        facil('Internet Services', Internet)
+        facil('Clothing Laundry', Laundry)
+        facil('Security (CCTV, etc)', Security)
+        facil('Restaurant', Restaurant)
+        facil('Multipurpose Room', Multipurpose_Room)
+        facil('Kids Playground', Playground)
 
-        if st.checkbox('Water Heater'):
-            Water_Heater.append(1)
-        else:
-            Water_Heater.append(0)
+        st.subheader('Which sports facilities are present?')
+        facil('Swimming Pool', Swim_Pool)
+        facil('Basketball Field', Basketball)
+        facil('Gym', Gym)
+        facil('Jogging Track', Jogging)
+        facil('Tennis Field', Tennis)
+        
+        #new feature: we total all sports facilities into one feature
+        sports = Swim_Pool[0] + Basketball[0] + Gym[0] + Jogging[0] + Tennis[0]
+                
+        Sports.append(sports)
+        
+        #total facilities
+        total = AC[0] + Water_Heater[0] + Dining_Set[0] + Bed[0] + Kitchen[0] + Fridge[0] + Washing_Machine[0] + \
+            TV[0] + ATM[0] + TV_Cable[0] + Grocery[0] + Internet[0] + Laundry[0] + Security[0] + Multipurpose_Room[0] + \
+            Restaurant[0] + Playground[0] + sports
 
-        if st.checkbox('Kitchen Set'):
-            Kitchen.append(1)
-        else:
-            Kitchen.append(0)
+        Group1 = list()
+        Group2 = list()
+        Group3 = list()
+        Group4 = list()
 
+        group1 = AC[0] + Water_Heater[0] + Dining_Set[0] + Bed[0] + Kitchen[0] + Fridge[0] + Furnished[0]
+        group2 = TV[0] + ATM[0] + TV_Cable[0] + Grocery[0] + Internet[0] + Laundry[0] + Security[0] + Multipurpose_Room[0] + Restaurant[0] + Playground[0]
+        group3 = Swim_Pool[0] + Gym[0]
+        group4 = Tennis[0] + Jogging[0] + Basketball[0]
 
-        df = pd.DataFrame(
-            {'Area': Area,
-            'Latitude': Latitude,
-            'Longitude': Longitude,
-            'Jakcheck': Jakcheck,
-            'Multipurpose_Room': Multipurpose_Room,
-            'Playground': Playground,
-            'Basketball' : Basketball,
-            'Swim_Pool': Swim_Pool,
-            'Jogging': Jogging,
-            'Restaurant': Restaurant,
-            'Tennis': Tennis,
-            'Washing_Machine' : Washing_Machine,
-            'Fridge' : Fridge,
-            'Furnished' : Furnished,
-            'Water_Heater': Water_Heater,
-            'Kitchen': Kitchen,
-            'No_Rooms': No_Rooms,
+        Group1.append(group1)
+        Group2.append(group2)
+        Group3.append(group3)
+        Group4.append(group4)
+
+        Total_Facilities.append(total)
+        st.write(Sports)
+        st.write(Total_Facilities)
+
+        STF = list()
+        STF.append(np.log1p(total))
+
+        df = pd.DataFrame({'No_Rooms':No_Rooms, 'Longitude':Longitude, 'Latitude':Latitude, 'Furnished':Furnished, 'Area':Area, 'AC':AC,
+       'Water_Heater':Water_Heater, 'Dining_Set':Dining_Set, 'Bed':Bed, 'Kitchen':Kitchen, 'Fridge':Fridge,
+       'Washing_Machine':Washing_Machine, 'TV':TV, 'ATM':ATM, 'TV_Cable':TV_Cable, 'Grocery':Grocery, 'Internet':Internet,
+       'Swim_Pool':Swim_Pool, 'Laundry':Laundry, 'Security':Security, 'Basketball':Basketball, 'Multipurpose_Room':Multipurpose_Room,
+       'Gym':Gym, 'Jogging':Jogging, 'Tennis':Tennis, 'Restaurant':Restaurant, 'Playground':Playground, 'Jakcheck':Jakcheck, 'Total_Facilities':Total_Facilities
             })
 
+        # df = pd.DataFrame({
+        #     'No_Rooms':No_Rooms,
+        #     'Longitude':Longitude,
+        #     'Latitude':Latitude,
+        #     'Area':Area,
+        #     'Jakcheck':Jakcheck,
+        #     'Group1':Group1,
+        #     'Group2':Group2,
+        #     'Group3':Group3,
+        #     'Group4':Group4
+        # })
+
         if st.button("Calculate Price", key='classify'):
-            xgb = joblib.load('xgboost_tuned.joblib.dat')
+            xgb = pickle.load(open('xgboost_tuned.pickle.dat', "rb"))
             price = int(xgb.predict(df)[0])
             #Define a rule to make prediction intervals
             #If the predicted value is below 50 million, the prediction interval will be plus minus 2.5%, and so on
             #If the predicted value is under 100 million, it will be rounded to the closest million
             #If the predicted value is above 100 million, it will be rounded to the closest tens of millions
+            if Furnished[0] == 0:
+                price = round(price*0.75)
+            else:
+                price = price
+            
             if price < 50000000:
-                interval = 0.025
+                interval = 0.15
                 rounding = -6
             elif price < 100000000:
-                interval = 0.05
+                interval = 0.15
                 rounding = -6
             elif price < 500000000:
-                interval = 0.075
+                interval = 0.2
                 rounding = -7
             else:
-                interval = 0.1
+                interval = 0.2
                 rounding = -7
+            
 
             #Calculating the lower and upper bound
-            lower_price = int(round(price-price*(interval-0.01), rounding))
-            upper_price = int(round(price+price*(interval+0.01), rounding))
+            lower_price = int(round(price-price*(interval+0.01), rounding))
+            upper_price = int(round(price+price*(interval-0.01), rounding))
             #Changing to string for formatting
             str_price = format(price, ',')
             str_lowprice = format(lower_price, ',')
@@ -703,20 +730,14 @@ def main():
                 learning models, it has some limitations. It is much better to train and evaluate model using Jupyter notebooks/Google colabs as \
                 we can do more things with lines of codes rather than a point-and-click interface. Furthermore, complex models can be \
                 trained faster by the use of GPU (Graphics Processing Unit) which is very difficult to implement in web apps like these.')                    
+        
         st.subheader('What score should I aim for?')    
-        st.write("When cross validated, the final model's RMSE score usually averages at around 30 000 000, and has R-squared score around 0.9. \
+        st.write("When cross validated, the final model's RMSE score usually averages at around 30 000 000, and has an R-squared score around 0.9. \
             Try to see if you can find combinations of columns and parameters that yields a model with RMSE score around the final model's, \
             but watch out for overfitting!")
 
         if st.checkbox("Display Data", False):
             st.write(ML_Ready)
-
-        st.markdown("If you need a clue on which columns are used in the deployed model on the 'Calculator' page, click the button below.")
-        if st.button("Click for clue!"):
-            st.markdown("The model used in 'Calculator' page is a tuned XGBoost model. The training set includes the following feature columns: 'Area', \
-        'Number of Bedrooms', 'Longitude', 'Latitude', 'In-Jakarta Check', 'Multipurpose Room', 'Kids Playground', 'Basketball Field', \
-        'Swimming Pool', 'Jogging', 'Restaurant', 'Tennis Field', 'Washing Machine', 'Refrigerator', 'Furnished', \
-        'Water Heater', 'Kitchen Set', and 'Number of Rooms'. Feel free to try using other column combinations!")
 
         st.subheader('Which features would you like to include?')
         cols = st.multiselect("Choose your feature columns", ('URL', 'Unit_ID', 'Number of Bedrooms', 'District', 'Region',
@@ -786,7 +807,7 @@ def main():
 
             if R2_train < R2_test:
                     st.write('Your R-squared train score is less than R-squared test score. Your model might be underfit. \
-                            Try to increase the complexity of your model by adding more features.')
+                            Try to change your feature columns to see if you can have a better fit.')
             elif R2_train > R2_test:
                 if (R2_train - R2_test)*100 > 5:
                     st.write('Your R-squared train score is higher than your R-squared test score by 5 percent or more. \
@@ -798,9 +819,15 @@ def main():
                         st.write("You can still do better! Try to find another combination of columns and/or parameters. \
                             A linear regression can achieve up to 0.78 R-squared score, \
                             while XGBoost and Light GBM can reach up to 0.9 R-squared score.")
+                    elif R2_test < 0.88:
+                        st.write("Congratulations! You have made a regression model that is not underfit nor overfit, and with a relatively good \
+                            R-squared score. You haven't beat the model deployed on 'Calculator' page, though :)")
                     else:
-                        st.write('Congratulations! You have made a regression model that is not underfit nor overfit, and with a relatively good \
-                            R-squared score.')
+                        st.write("Congratulations! You have made a regression model that is not underfit nor overfit, and your model's performance \
+                            is as good as my final model. Well done!")
+
+                
+            
 
 
         st.subheader('Specify your machine learning model')
