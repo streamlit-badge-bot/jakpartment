@@ -1,4 +1,4 @@
-# Welcome to jakpartment!
+# Welcome to jakpartment! [![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/radvian/jakpartment/main/app.py)
 This is my first end-to-end Data Science project which incorporates web scraping, data wrangling and analysis, machine learning modeling, and web app deployment.
 The deployed web app has a calculator page to predict annual rent price of apartment units, interactive data dashboards with visualizations, as well a dedicated interactive page in which you can create and train your own machine learning model - without writing a single line of code.
 
